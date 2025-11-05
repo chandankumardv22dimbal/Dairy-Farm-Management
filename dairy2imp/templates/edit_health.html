@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<style>
+  /* match the Health page background */
+  body{background-image: url("https://www.cve.edu.in/admin/images/493104tile-wide.png");background-size:cover;background-repeat:no-repeat;background-position:center center;background-attachment:fixed}
+</style>
+
+<div class="overlay">
+  <h2 class="mb-3">✏️ Edit Health Record</h2>
+
+  <form action="{{ url_for('edit_health', id=health.id) }}" method="POST" class="row g-2 mb-4">
+    <div class="col-md-2">
+      <input type="number" name="animal_id" class="form-control" placeholder="Animal ID" value="{{ health.animal_id }}" required>
+    </div>
+    <div class="col-md-2">
+      <input type="date" name="date" class="form-control" value="{{ health.date }}" required>
+    </div>
+    <div class="col-md-3">
+      <input type="text" name="issue" class="form-control" placeholder="Issue" value="{{ health.issue }}">
+    </div>
+    <div class="col-md-3">
+      <input type="text" name="treatment" class="form-control" placeholder="Treatment" value="{{ health.treatment }}">
+    </div>
+    <div class="col-md-2">
+      <input type="text" name="vet_name" class="form-control" placeholder="Vet Name" value="{{ health.vet_name }}">
+    </div>
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-success w-100">Update</button>
+    </div>
+  </form>
+
+  <a href="{{ url_for('health') }}" class="btn btn-secondary">← Back to Health Records</a>
+</div>
+{% endblock %}

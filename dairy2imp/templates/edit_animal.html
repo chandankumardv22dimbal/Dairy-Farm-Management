@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<style>
+  /* match the Animals page background */
+  body{background-image: url("{{ url_for('static', filename='images/animals1.jpeg') }}");background-size:cover;background-repeat:no-repeat;background-position:center center;background-attachment:fixed}
+</style>
+
+<div class="overlay">
+  <h2 class="mb-3">Edit Animal</h2>
+
+  <form action="{{ url_for('edit_animal', id=animal.id) }}" method="POST" class="row g-2 mb-4">
+  <div class="col-md-2">
+    <input type="text" name="name" class="form-control" placeholder="Name" value="{{ animal.name }}" required>
+  </div>
+  <div class="col-md-2">
+    <input type="text" name="species" class="form-control" placeholder="Species" value="{{ animal.species }}">
+  </div>
+  <div class="col-md-2">
+    <input type="text" name="breed" class="form-control" placeholder="Breed" value="{{ animal.breed }}">
+  </div>
+  <div class="col-md-2">
+    <input type="number" name="age" class="form-control" placeholder="Age" value="{{ animal.age }}">
+  </div>
+  <div class="col-md-2">
+    <select name="gender" class="form-select">
+      <option value="Female" {% if animal.gender == 'Female' %}selected{% endif %}>Female</option>
+      <option value="Male" {% if animal.gender == 'Male' %}selected{% endif %}>Male</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-success w-100">Update</button>
+  </div>
+  </form>
+
+  <a href="{{ url_for('animals') }}" class="btn btn-secondary">← Back to Animals</a>
+</div>
+
+{% endblock %}

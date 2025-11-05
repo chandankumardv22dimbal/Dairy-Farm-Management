@@ -1,0 +1,399 @@
+/* ==================================================
+   Improved stylesheet for dairy2imp
+   - Added CSS variables for easy theming
+   - Small reset / box-sizing normalization
+   - Base typography and spacing scale
+   - Responsive layout utilities and components
+   - Accessibility helpers (focus-visible, sr-only)
+================================================== */
+
+/* ------------------ Variables ------------------ */
+:root{
+  /* colors */
+  --bg: transparent;
+  /* subtle soft green/cream surface to elevate content over the background image */
+  /* make surfaces translucent but not opaque so the background shows through */
+  /* make surfaces more transparent so background images read clearly */
+  --surface: rgba(237, 249, 237, 0.45);
+  --card: rgba(245, 250, 247, 0.45);
+  --muted: #718096;
+  --text: #24343a;
+  --accent: #38a169;
+  --accent-600: #2f855a;
+  --danger: #e53e3e;
+  --success: #10b981;
+
+  /* spacing */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 20px;
+  --space-5: 32px;
+
+  /* typography */
+  --base-font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --base-size: 16px;
+  --radius: 8px;
+  --shadow-1: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* -------------- Reset / Base -------------- */
+*{box-sizing:border-box}
+html,body{height:100%}
+html{font-size:var(--base-size)}
+body{
+  margin:0;
+  font-family:var(--base-font);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  padding:var(--space-4);
+}
+
+/* Improve typographic rhythm */
+h1,h2,h3,h4{margin:0 0 var(--space-3) 0;font-weight:700}
+h1{font-size:clamp(1.35rem, 2.2vw, 2rem)}
+h2{font-size:1.25rem;color:var(--accent-600)}
+h3{font-size:1.05rem}
+p{margin:0 0 var(--space-3)}
+
+/* -------------- Layout / Container -------------- */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  background:var(--card);
+  padding:var(--space-5);
+  border-radius:calc(var(--radius) + 4px);
+  box-shadow:var(--shadow-1);
+  transition:box-shadow .25s ease, transform .12s ease;
+  /* remove blur so background image stays crisp */
+  backdrop-filter: none;
+}
+.container:focus-within{outline:2px solid rgba(56,161,105,0.08)}
+.container--compact{padding:var(--space-4)}
+
+/* -------------- Sidebar Layout -------------- */
+.app-shell{
+  display:flex;
+  flex-direction:row; /* sidebar on the left, main content on the right */
+  min-height:100vh;
+  gap:var(--space-4);
+  align-items:flex-start; /* align to top (restore natural flow) */
+  justify-content:flex-start; /* keep sidebar at left */
+  padding-left:0; /* remove extra left gutter so sidebar sits closer */
+}
+
+.sidebar {
+  width: 220px;
+  background: rgba(20, 83, 45, 0.95);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: calc(var(--radius) + 4px);
+  padding: 8px 6px;
+  margin: 0 auto;        /* centers it */
+  height: auto;          /* ✅ no forced tall height */
+  position: relative;    /* ✅ cancels sticky stretch */
+}
+
+
+.sidebar-brand{border-bottom:1px solid rgba(255,255,255,0.06)}
+.sidebar-nav{display:flex;flex-direction:column;padding-top:8px}
+.sidebar-nav .nav-link{
+  color:rgba(255,255,255,0.95);
+  padding:10px 8px; /* tighter horizontal padding */
+  display:block;
+  border-radius:8px;
+  margin:4px 0; /* remove horizontal margin so links align flush */
+  text-decoration:none;
+}
+.sidebar-nav .nav-link:hover{background:rgba(255,255,255,0.06);color:#fff}
+.sidebar-nav .nav-link.active{background:rgba(0,0,0,0.18);font-weight:700}
+
+.sidebar-footer{margin-top:auto;padding-bottom:10px}
+
+.main-content{flex:1;display:block}
+.main-content .container{background:transparent;box-shadow:none;padding:0}
+
+/* Responsive: collapse sidebar on small screens */
+@media (max-width: 900px){
+  .app-shell{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative;border-radius:8px}
+  .main-content .container{padding-top:var(--space-3)}
+}
+
+/* Collapsed sidebar (toggled) */
+.sidebar.collapsed{
+  width:72px;
+}
+.sidebar.collapsed .sidebar-brand .ms-2,
+.sidebar.collapsed .sidebar-nav .nav-link{
+  white-space:nowrap;
+}
+.sidebar.collapsed .sidebar-nav .nav-link{
+  text-overflow:ellipsis;overflow:hidden;padding-left:10px;padding-right:10px}
+
+
+
+/* Hero (kept from original but improved for performance) */
+.hero{
+  position:relative;
+  height:280px;
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:var(--space-5);
+  background-size:cover;background-position:center;
+}
+.hero::after{content:"";position:absolute;inset:0;background: transparent;}
+.hero-content{position:absolute;left:32px;bottom:28px;color:#fff;z-index:1}
+.hero-content h1{font-size:1.6rem;margin-bottom:6px}
+
+/* -------------- Utilities -------------- */
+.visually-hidden, .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+.flex{display:flex}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.stack{display:flex;flex-direction:column;gap:var(--space-3)}
+.gap-2{gap:var(--space-2)}
+.gap-3{gap:var(--space-3)}
+
+.row{display:flex;flex-wrap:wrap;margin:calc(-1 * var(--space-2));}
+.col{padding:var(--space-2)}
+.col-1{flex:0 0 8.333%}
+.col-2{flex:0 0 16.666%}
+.col-3{flex:0 0 25%}
+.col-4{flex:0 0 33.333%}
+.col-6{flex:0 0 50%}
+.col-auto{flex:1}
+
+/* Simple grid helper using minmax*/
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-4)}
+
+/* -------------- Buttons -------------- */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600}
+.btn:focus{outline:3px solid rgba(56,161,105,0.16);outline-offset:2px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-600)}
+.btn-secondary{background:var(--muted);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-ghost{background:transparent;border:1px solid rgba(36,52,58,0.06);color:var(--text)}
+
+/* small icon button */
+.btn--sm{padding:6px 10px;font-size:.9rem}
+
+/* -------------- Forms -------------- */
+.form-group{margin-bottom:var(--space-3);display:flex;flex-direction:column;gap:8px}
+label{font-weight:600;font-size:.95rem}
+input[type="text"],input[type="number"],input[type="email"],select,textarea{
+  border:1px solid #e2e8f0;padding:10px;border-radius:8px;font-size:1rem;background:#fff;transition:border-color .16s,box-shadow .16s
+}
+textarea{min-height:90px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,161,105,0.08);outline:none}
+.form-inline{display:flex;gap:10px;align-items:center}
+
+/* submit style */
+button[type="submit"],.form-submit{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+button[type="submit"]:hover{background:var(--accent-600)}
+
+/* -------------- Tables (responsive) -------------- */
+.table-responsive {
+  width: 100%;
+  overflow: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  background: var(--surface);
+  margin-bottom: var(--space-4);
+  /* remove blur so background image remains sharp behind tables */
+  backdrop-filter: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: var(--space-3);
+  vertical-align: middle;
+  /* visible cell border for clear table lines */
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background-clip: padding-box;
+}
+
+/* Header styling */
+thead tr {
+  background: rgba(56,161,105,0.9); /* slightly stronger accent */
+}
+
+th {
+  background: rgba(56,161,105,0.9);
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* First and last cells in header need border radius */
+thead tr th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+thead tr th:last-child {
+  border-top-right-radius: var(--radius);
+}
+
+/* Row styling */
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(248,250,252,0.45);
+}
+
+
+
+/* Zebra striping for better readability */
+tbody tr:nth-child(even) {
+  background: rgba(249, 250, 251, 0.25);
+}
+
+tbody tr:nth-child(even):hover {
+  background: rgba(243, 244, 246, 0.45);
+}
+
+/* lighter hover so background image remains visible */
+tbody tr:hover {
+  background: rgba(248, 250, 252, 0.45);
+}
+
+/* Table actions styling */
+.table-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.table-actions .btn {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+/* Responsive table styles */
+@media (max-width: 520px) {
+  .table-responsive {
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    margin-bottom: var(--space-3);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    border: 1px solid #edf2f7;
+  }
+
+  td {
+    padding: var(--space-3);
+    border: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  td:last-child {
+    border-bottom: none;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--accent);
+    margin-right: var(--space-3);
+    min-width: 120px;
+  }
+
+  .table-actions {
+    justify-content: flex-start;
+    padding-top: var(--space-2);
+  }
+}
+
+/* -------------- Flash / Alerts -------------- */
+.flashes{list-style:none;padding:0;margin:0 0 var(--space-4)}
+.flashes li{padding:10px 14px;border-radius:8px;margin-bottom:10px;background:#def7ec;color:#065f46;border-left:4px solid var(--success)}
+
+/* Override per-template .overlay to use the themed surface/card color
+   and match the look & feel of `.table-responsive` so edit pages
+   visually match the main tables. */
+.overlay {
+  background: var(--surface) !important;
+  box-shadow: var(--shadow-1) !important;
+  color: var(--text) !important;
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  max-width: 95%;
+  margin: 28px auto;
+  /* remove blur so background remains clear */
+  backdrop-filter: none;
+  border: 1px solid rgba(15,23,42,0.04);
+  transition: box-shadow .18s ease, transform .12s ease;
+}
+
+/* -------------- Misc / Helpers -------------- */
+.card{background:var(--surface);padding:var(--space-3);border-radius:8px;box-shadow:var(--shadow-1)}
+.muted{color:#718096}
+
+/* -------------- Responsive tweaks -------------- */
+@media (max-width: 768px){
+  body{padding:12px}
+  .container{padding:20px}
+  .hero{height:200px}
+  .hero-content h1{font-size:1.25rem}
+  .form-inline{flex-direction:column;align-items:stretch}
+}
+
+/* -------------- Centered fixed sidebar on desktop -------------- */
+@media (min-width: 901px) {
+  /* make the sidebar visually centered in the viewport and static (fixed) */
+  .sidebar {
+    position: fixed;
+    left: 18px; /* small gutter from the left edge */
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0; /* remove auto-centering inside the flow */
+    z-index: 999;
+    height: auto; /* allow natural height */
+  }
+
+  /* ensure the main content leaves room for the fixed sidebar */
+  .main-content {
+    margin-left: 260px; /* sidebar width (220) + gap (≈40) */
+  }
+
+  /* if sidebar is collapsed, reduce left offset to match smaller width */
+  .sidebar.collapsed + .main-content,
+  .sidebar.collapsed ~ .main-content {
+    margin-left: 110px; /* 72px sidebar + comfortable gutter */
+  }
+}
+
+/* End of stylesheet */
